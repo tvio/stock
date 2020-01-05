@@ -44,9 +44,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'randomizeStocks'
-    ]),
+    ...mapActions({
+      rnd:'randomizeStocks',
+      fetchData:'loadData'
+  }),
     endDay(){
       this.randomizeStocks();
 
@@ -63,7 +64,11 @@ export default {
                         }, error => {
                             console.log(error)
                         });
-            }
+     },
+      loadData(){
+        this.fetchData();
+
+      }
     }
   }
 </script>

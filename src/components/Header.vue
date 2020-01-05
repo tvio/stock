@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <router-link to="/" class="navbar-brand">Stock Trader</router-link>
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto ">
       <router-link to="/portfolio" activeClass="nav-item active" tag="li">
         <a class="nav-link">Portfolio</a>
       </router-link>
@@ -17,18 +17,18 @@
     </button>-->
 
     <!-- Navbar links -->
-    <div class="collapse navbar-collapse nav-right" id="collapsibleNavbar">
-      <ul class="navbar-nav ml-auto">
-        <strong class="navbar-text nav-link">Funds:</strong>
+    <div class="navbar-nav" id="collapsibleNavbar">
+           <ul class="navbar-nav ml-auto">
+        <strong class="navbar-text ">Funds: {{funds | mena}}</strong>
 
-        <li class="nav-item active">
-          <a class="nav-link" href="#">End Day</a>
+              <li class="nav-item active">
+          <a class="nav-link" @click="endDay" href="#">End Day</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Save</a>
+          <a class="nav-link" @click="saveData" href="#">Save</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Load</a>
+          <a class="nav-link" @click="loadData" href="#">Load</a>
         </li>
       </ul>
     </div>
@@ -36,4 +36,35 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+export default {
+  computed:{
+    funds(){
+      return this.$store.getters.funds;
+    }
+  },
+  methods: {
+    ...mapActions([
+      'randomizeStocks'
+    ]),
+    endDay(){
+      this.randomizeStocks();
+
+    },
+    saveData(){
+      const data ={
+        funds: this.$store.getters.funds,
+        stockPortfolio: this.$store.getters.stockPortfolio,
+        stocks: this.$store.getters.stocks
+      };
+     this.$http.put('data.json', data)
+                    .then(response => {
+                        console.log(response)
+                        }, error => {
+                            console.log(error)
+                        });
+            }
+    }
+  }
 </script>
+
